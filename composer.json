@@ -1,0 +1,16 @@
+{
+    "name": "natan/task-cli",
+    "description": "task tracker cli app",
+    "authors": [
+        {
+            "name": "Natan",
+            "email": "natanscosta7@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4":{
+            "TaskCli\\": "src/"
+        }
+    }
+}
