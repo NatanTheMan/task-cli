@@ -4,6 +4,12 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use TaskCli\Controller;
+use TaskCli\View;
 
-$controller = new Controller($argc);
-$controller->execute();
+try {
+    $controller = new Controller($argv, $argc);
+    $controller->execute();
+} catch (Exception $e) {
+    $view = new View();
+    $view->exception($e);
+}
