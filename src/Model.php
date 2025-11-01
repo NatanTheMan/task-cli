@@ -2,6 +2,8 @@
 
 namespace TaskCli;
 
+use Exception;
+
 class Model
 {
     private $filePath;
@@ -37,6 +39,18 @@ class Model
     {
         $tasks = json_decode(file_get_contents($this->filePath));
         unset($tasks[$id - 1]);
+        $file = fopen($this->filePath, "w");
+        fwrite($file, json_encode($tasks));
+        fclose($file);
+    }
+
+    public function update(int $id, string $newDesc): void
+    {
+        $tasks = json_decode(file_get_contents($this->filePath));
+        if (!array_key_exists($id - 1, $tasks)) {
+            throw new Exception("Not found task with id: $id");
+        }
+        $tasks[$id - 1]->description = $newDesc;
         $file = fopen($this->filePath, "w");
         fwrite($file, json_encode($tasks));
         fclose($file);

@@ -30,6 +30,7 @@ class Controller
             "add" => $this->add(),
             "list" => $this->list(),
             "delete" => $this->delete(),
+            "update" => $this->update(),
         };
     }
 
@@ -60,5 +61,19 @@ class Controller
         }
 
         $this->model->delete($id);
+    }
+
+    public function update()
+    {
+        if ($this->argsCount <= 2) {
+            throw new Exception("Pass the ID of Task to Update");
+        }
+        if ($this->argsCount <= 3) {
+            throw new Exception("Pass new description to Task");
+        }
+
+        $id = intval($this->args[2]);
+        $newDescription = strval(trim($this->args[3]));
+        $this->model->update($id, $newDescription);
     }
 }
