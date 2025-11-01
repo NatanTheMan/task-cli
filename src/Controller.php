@@ -10,12 +10,14 @@ class Controller
     private $argsCount;
     public $list = [];
     public $model;
+    public $view;
 
     public function __construct(array $args, int $argsCount)
     {
         $this->args = $args;
         $this->argsCount = $argsCount;
         $this->model = new Model();
+        $this->view = new View();
     }
 
     public function execute()
@@ -25,7 +27,8 @@ class Controller
         }
 
         match($this->args[1]) {
-            "add" => $this->add()
+            "add" => $this->add(),
+            "list" => $this->list(),
         };
     }
 
@@ -37,5 +40,11 @@ class Controller
 
         $task = new Task($this->args[2]);
         $this->model->save($task);
+    }
+
+    private function list()
+    {
+        $tasks = $this->model->listAll();
+        $this->view->listAll($tasks);
     }
 }

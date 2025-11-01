@@ -24,4 +24,9 @@ class Model
         fwrite($file, json_encode($array));
         fclose($file);
     }
+
+    public function listAll(): array
+    {
+        return json_decode(file_get_contents($this->filePath));
+    }
 }
