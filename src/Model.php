@@ -16,7 +16,7 @@ class Model
         }
     }
 
-    public function save(Task $task)
+    public function save(Task $task): void
     {
         $array = json_decode(file_get_contents($this->filePath));
         array_push($array, $task);
@@ -25,8 +25,20 @@ class Model
         fclose($file);
     }
 
+    /**
+     * @return array<Task>
+     */
     public function listAll(): array
     {
         return json_decode(file_get_contents($this->filePath));
+    }
+
+    public function delete(int $id): void
+    {
+        $tasks = json_decode(file_get_contents($this->filePath));
+        unset($tasks[$id - 1]);
+        $file = fopen($this->filePath, "w");
+        fwrite($file, json_encode($tasks));
+        fclose($file);
     }
 }

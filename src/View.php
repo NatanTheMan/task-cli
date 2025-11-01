@@ -13,8 +13,8 @@ class View
 
     public function listAll(array $tasks)
     {
-        foreach ($tasks as $task) {
-            echo $task->description, PHP_EOL;
+        foreach ($tasks as $i => $task) {
+            echo $i + 1 . " - $task->description", PHP_EOL;
         }
     }
 }

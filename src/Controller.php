@@ -29,6 +29,7 @@ class Controller
         match($this->args[1]) {
             "add" => $this->add(),
             "list" => $this->list(),
+            "delete" => $this->delete(),
         };
     }
 
@@ -46,5 +47,18 @@ class Controller
     {
         $tasks = $this->model->listAll();
         $this->view->listAll($tasks);
+    }
+
+    public function delete()
+    {
+        if ($this->argsCount <= 2) {
+            throw new Exception("Pass the ID of Task to delete");
+        }
+        $id = intval($this->args[2]);
+        if (!is_int($id)) {
+            throw new Exception("ID need to be an integer number");
+        }
+
+        $this->model->delete($id);
     }
 }
