@@ -31,6 +31,7 @@ class Controller
             "list" => $this->list(),
             "delete" => $this->delete(),
             "update" => $this->update(),
+            default => throw new Exception("Invalid Action")
         };
     }
 
