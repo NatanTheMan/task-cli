@@ -36,9 +36,7 @@ class Controller
 
     private function add()
     {
-        if ($this->argsCount <= 2) {
-            throw new Exception("No task description proved");
-        }
+        $this->validateArgsCount(2, "No task description proved");
 
         $task = new Task($this->args[2]);
         $this->model->save($task);
@@ -52,9 +50,8 @@ class Controller
 
     public function delete()
     {
-        if ($this->argsCount <= 2) {
-            throw new Exception("Pass the ID of Task to delete");
-        }
+        $this->validateArgsCount(2, "Pass the ID of Task to delete");
+
         $id = intval($this->args[2]);
         if (!is_int($id)) {
             throw new Exception("ID need to be an integer number");
@@ -65,15 +62,18 @@ class Controller
 
     public function update()
     {
-        if ($this->argsCount <= 2) {
-            throw new Exception("Pass the ID of Task to Update");
-        }
-        if ($this->argsCount <= 3) {
-            throw new Exception("Pass new description to Task");
-        }
+        $this->validateArgsCount(2, "Pass the ID of Task to Update");
+        $this->validateArgsCount(3, "Pass new description to Task");
 
         $id = intval($this->args[2]);
         $newDescription = strval(trim($this->args[3]));
         $this->model->update($id, $newDescription);
+    }
+
+    private function validateArgsCount(int $index, string $messge)
+    {
+        if ($this->argsCount <= $index) {
+            throw new Exception($messge);
+        }
     }
 }
