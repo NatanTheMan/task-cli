@@ -26,7 +26,7 @@ class Controller
             throw new Exception("No arguments passed");
         }
 
-        match($this->args[1]) {
+        match(strtolower($this->args[1])) {
             "add" => $this->add(),
             "list" => $this->list(),
             "delete" => $this->delete(),
