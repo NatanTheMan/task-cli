@@ -20,11 +20,9 @@ class Model
 
     public function save(Task $task): void
     {
-        $array = json_decode(file_get_contents($this->filePath));
-        array_push($array, $task);
-        $file = fopen($this->filePath, "w");
-        fwrite($file, json_encode($array));
-        fclose($file);
+        $tasks = $this->decode();
+        array_push($tasks, $task);
+        $this->write(json_encode($tasks));
     }
 
     /**
@@ -32,27 +30,38 @@ class Model
      */
     public function listAll(): array
     {
-        return json_decode(file_get_contents($this->filePath));
+        return $this->decode();
     }
 
     public function delete(int $id): void
     {
-        $tasks = json_decode(file_get_contents($this->filePath));
+        $tasks = $this->decode();
         unset($tasks[$id - 1]);
-        $file = fopen($this->filePath, "w");
-        fwrite($file, json_encode($tasks));
-        fclose($file);
+        $this->write(json_encode($tasks));
     }
 
     public function update(int $id, string $newDesc): void
     {
-        $tasks = json_decode(file_get_contents($this->filePath));
+        $tasks = $this->decode();
         if (!array_key_exists($id - 1, $tasks)) {
             throw new Exception("Not found task with id: $id");
         }
         $tasks[$id - 1]->description = $newDesc;
+        $this->write(json_encode($tasks));
+    }
+
+    private function write(string $content)
+    {
         $file = fopen($this->filePath, "w");
-        fwrite($file, json_encode($tasks));
+        fwrite($file, $content);
         fclose($file);
+    }
+
+    /**
+     * @return array<Task>
+     */
+    private function decode(): array
+    {
+        return json_decode(file_get_contents($this->filePath)) ;
     }
 }
