@@ -1,6 +1,6 @@
 # Task Tracker Cli
 - [Installation](#Installation)
-- [How to use](#Howtouse)
+- [How to use](#How-to-use)
 - [Examples](#Examples)
 - [Types](#Types)
 
