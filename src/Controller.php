@@ -31,6 +31,8 @@ class Controller
             "list" => $this->list(),
             "delete" => $this->delete(),
             "update" => $this->update(),
+            "mark-done" => $this->setStatus(Status::Done),
+            "mark-in-progress" => $this->setStatus(Status::InProgress),
             default => throw new Exception("Invalid Action")
         };
     }
@@ -69,6 +71,14 @@ class Controller
         $id = intval($this->args[2]);
         $newDescription = strval(trim($this->args[3]));
         $this->model->update($id, $newDescription);
+    }
+
+    public function setStatus(Status $status)
+    {
+        $this->validateArgsCount(2, "Pass the ID of Task to set her Status");
+
+        $id = intval($this->args[2]);
+        $this->model->setStatus($id, $status);
     }
 
     private function validateArgsCount(int $index, string $messge)
