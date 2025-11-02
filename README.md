@@ -1,8 +1,8 @@
 # Task Tracker Cli
 - [Installation](#Installation)
-- [How to use](#)
-- [Examples](#)
-- [Types](#)
+- [How to use](#Howtouse)
+- [Examples](#Examples)
+- [Types](#Types)
 
 ## Installation
 
