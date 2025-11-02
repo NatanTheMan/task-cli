@@ -21,4 +21,9 @@ class View
             echo $i + 1 . " - $task->description - " . $task->status,  PHP_EOL;
         }
     }
+
+    public function help(string $content)
+    {
+        echo $content, PHP_EOL;
+    }
 }

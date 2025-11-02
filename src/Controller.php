@@ -23,7 +23,8 @@ class Controller
     public function execute()
     {
         if ($this->argsCount == 1) {
-            throw new Exception("No arguments passed");
+            $this->help();
+            return;
         }
 
         match(strtolower($this->args[1])) {
@@ -33,7 +34,8 @@ class Controller
             "update" => $this->update(),
             "mark-done" => $this->setStatus(Status::Done),
             "mark-in-progress" => $this->setStatus(Status::InProgress),
-            default => throw new Exception("Invalid Action")
+            "help" => $this->help(),
+            default => $this->help(),
         };
     }
 
@@ -96,5 +98,29 @@ class Controller
         if ($this->argsCount <= $index) {
             throw new Exception($messge);
         }
+    }
+
+    public function help()
+    {
+        $help = <<<TEXT
+             ./index.php <action> <option>
+
+             actions:
+                 add <description>         - storage new task
+                 list                      - print all tasks
+                 list <status>             - print tasks that match with proved status
+                 delete <id>               - delete task
+                 update <id> <description> - update task description
+                 mark-done <id>            - mark task as done
+                 mark-in-progress <id>     - mark task as in-progress
+
+            options:
+                <id>         - int or string (7 or "9")
+                <decription> - string ("Study math")
+                <status>     - symbol or string (todo, in-progress or done)
+
+            For more information check: https://github.com/NatanTheMan/task-cli
+            TEXT;
+        $this->view->help($help);
     }
 }
