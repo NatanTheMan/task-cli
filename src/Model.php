@@ -50,6 +50,16 @@ class Model
         $this->write(json_encode($tasks));
     }
 
+    public function setStatus(int $id, Status $status)
+    {
+        $tasks = $this->decode();
+        if (!array_key_exists($id - 1, $tasks)) {
+            throw new Exception("Not found task with id: $id");
+        }
+        $tasks[$id - 1]->status = $status;
+        $this->write(json_encode($tasks));
+    }
+
     private function write(string $content)
     {
         $file = fopen($this->filePath, "w");
