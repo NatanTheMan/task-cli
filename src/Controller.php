@@ -47,7 +47,17 @@ class Controller
 
     private function list()
     {
-        $tasks = $this->model->listAll();
+        $tasks = [];
+        if ($this->argsCount == 3) {
+            $status = Status::tryFrom(strtolower($this->args[2]));
+            if ($status == null) {
+                throw new Exception("Invalid status");
+            }
+            $tasks = $this->model->listByStatus($status);
+        } else {
+            $tasks = $this->model->listAll();
+        }
+
         $this->view->listAll($tasks);
     }
 

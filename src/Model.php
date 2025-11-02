@@ -33,6 +33,17 @@ class Model
         return $this->decode();
     }
 
+    public function listByStatus(Status $status): array
+    {
+        $tasks = $this->decode();
+        return array_filter(
+            $tasks,
+            function ($task) use ($status) {
+                return Status::from($task->status) == $status;
+            }
+        );
+    }
+
     public function delete(int $id): void
     {
         $tasks = $this->decode();
