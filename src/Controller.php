@@ -2,6 +2,7 @@
 
 namespace TaskCli;
 
+use DateTime;
 use Exception;
 
 class Controller
@@ -27,13 +28,13 @@ class Controller
             return;
         }
 
-        match(strtolower($this->args[1])) {
+        match (strtolower($this->args[1])) {
             "add" => $this->add(),
             "list" => $this->list(),
             "delete" => $this->delete(),
             "update" => $this->update(),
-            "mark-done" => $this->setStatus(Status::Done),
-            "mark-in-progress" => $this->setStatus(Status::InProgress),
+            "mark-done" => $this->setStatus("done"),
+            "mark-in-progress" => $this->setStatus("in-progress"),
             "help" => $this->help(),
             default => $this->help(),
         };
@@ -43,7 +44,7 @@ class Controller
     {
         $this->validateArgsCount(2, "No task description proved");
 
-        $task = new Task($this->args[2]);
+        $task = new Task(null, $this->args[2], null, null, null);
         $this->model->save($task);
     }
 
@@ -51,11 +52,10 @@ class Controller
     {
         $tasks = [];
         if ($this->argsCount == 3) {
-            $status = Status::tryFrom(strtolower($this->args[2]));
-            if ($status == null) {
+            if ($this->args[2] == null) {
                 throw new Exception("Invalid status");
             }
-            $tasks = $this->model->listByStatus($status);
+            $tasks = $this->model->listByStatus(strtolower($this->args[2]));
         } else {
             $tasks = $this->model->listAll();
         }
@@ -85,7 +85,7 @@ class Controller
         $this->model->update($id, $newDescription);
     }
 
-    public function setStatus(Status $status)
+    public function setStatus(string $status)
     {
         $this->validateArgsCount(2, "Pass the ID of Task to set her Status");
 
@@ -122,5 +122,10 @@ class Controller
             For more information check: https://github.com/NatanTheMan/task-cli
             TEXT;
         $this->view->help($help);
+    }
+
+    public function getStatusById(int $id): object
+    {
+        return $this->model->getStatusById($id);
     }
 }

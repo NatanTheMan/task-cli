@@ -11,14 +11,11 @@ class View
         echo $e->getMessage(), PHP_EOL;
     }
 
-    /**
-     * @param array<Task> $task
-     * @return void
-     */
     public function listAll(array $tasks): void
     {
-        foreach ($tasks as $i => $task) {
-            echo $i + 1 . " - $task->description - " . $task->status,  PHP_EOL;
+        echo "ID - DESCRIPTION - STATUS", PHP_EOL, PHP_EOL;
+        foreach ($tasks as $task) {
+            echo "$task->id - $task->description - $task->name",  PHP_EOL;
         }
     }
 
